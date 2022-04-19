@@ -1,17 +1,40 @@
-import { useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { Container, Form, GroupInput, GroupRadio, Field } from './styles.js';
 import { FiUser, FiLock } from "react-icons/fi";
+import { AuthContext } from "../../contexts/auth.js";
 
 export default function Template({header, legend, dataArray}){
     const [ name, setName ] = useState('');
     const [ data, setData ] = useState(dataArray[0]);
     const [ answers, setAnswers ] = useState(dataArray);
 
+    const { user, setUser, verifyAdmin, storageUser, answer, setAnswer } = useContext(AuthContext);
+
+    const handleSubmit = useCallback((e) => {
+        e.preventDefault();
+        if(header !== "Questionário do dia"){
+            if(data === "Sou administrador") return verifyAdmin(name);
+            else{
+                let user = {
+                    name : "",
+                    occupation: "estudante"
+                }
+
+                setUser(user);
+                storageUser(user);
+            }
+        }else{
+            user.name = name;
+            user.goToday = ""
+        }
+        
+    }, [data, name, user, setUser, storageUser]);
+
     return(
         <Container>
             <h1>{header}</h1>
-            
-            <Form onSubmit={() => {}}>
+
+            <Form onSubmit={handleSubmit}>
                 
                 {header === "Questionário do dia" && 
                     (<GroupInput>
