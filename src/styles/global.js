@@ -8,7 +8,7 @@ export default createGlobalStyle`
         --paleta3: #FFF;
         --bordaPadrao: 1px solid black;
         --espacamentoPadrao: 10px;
-        --sombraPadrao: 2px 2px 3px black;
+        --sombraPadrao: 1px 1px 3px black;
     }
 
     *{
