@@ -29,7 +29,6 @@ export const Form = styled.form`
     gap: var(--espacamentoPadrao);
 
     button{
-        background-color: var(--paleta2);
         width: 100%;
         border-radius: var(--espacamentoPadrao);
         padding: var(--espacamentoPadrao);

@@ -6,6 +6,6 @@ export default function PublicRoutes({children}){
     const { signed, user } = useContext(AuthContext);
     
     if(!signed) return children;
-    else if(user.occupation === "admin") return <Navigate to="/admin"/>;
+    else if(user.occupation === "Sou administrador") return <Navigate to="/admin"/>;
     return <Navigate to="/home"/>
 }

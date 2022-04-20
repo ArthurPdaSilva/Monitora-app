@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { Container, Form, GroupInput, GroupRadio, Field } from './styles.js';
-import { FiUser, FiLock } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import { AuthContext } from "../../contexts/auth.js";
 
 export default function Template({header, legend, dataArray}){
@@ -8,24 +8,14 @@ export default function Template({header, legend, dataArray}){
     const [ data, setData ] = useState(dataArray[0]);
     const [ answers, setAnswers ] = useState(dataArray);
 
-    const { user, setUser, verifyAdmin, storageUser, answer, setAnswer } = useContext(AuthContext);
+    const { user, setUser, verifyUser, storageUser, answer, answerToday } = useContext(AuthContext);
 
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if(header !== "Questionário do dia"){
-            if(data === "Sou administrador") return verifyAdmin(name);
-            else{
-                let user = {
-                    name : "",
-                    occupation: "estudante"
-                }
-
-                setUser(user);
-                storageUser(user);
-            }
+            verifyUser(name, data);
         }else{
-            user.name = name;
-            user.goToday = ""
+            answerToday(data);
         }
         
     }, [data, name, user, setUser, storageUser]);
@@ -36,12 +26,12 @@ export default function Template({header, legend, dataArray}){
 
             <Form onSubmit={handleSubmit}>
                 
-                {header === "Questionário do dia" && 
+                {header !== "Questionário do dia" && 
                     (<GroupInput>
                     <label>
                         <FiUser size={30} color="#FFF"/>
                     </label>
-                    <input type="text" value={name} placeholder="Nome" onChange={(e) => setName(e.target.value)}/>
+                    <input type="text" value={name} placeholder="Nome Completo" onChange={(e) => setName(e.target.value)}/>
                 </GroupInput>
                 )}
                 
@@ -56,14 +46,6 @@ export default function Template({header, legend, dataArray}){
                     ))}
                 </Field>
 
-                {header !== "Questionário do dia" && data == "Sou administrador" && (
-                    <GroupInput>
-                        <label>
-                            <FiLock size={30} color="#FFF"/>
-                        </label>
-                        <input type="text" value={name} placeholder="Seu id text" onChange={(e) => setName(e.target.value)}/>
-                    </GroupInput>
-                )}
 
                 <button type="submit">
                     {header === "Questionário do dia" ? "Enviar" : "Entrar"}

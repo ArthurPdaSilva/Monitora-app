@@ -1,12 +1,28 @@
-import { Container } from './stylesAdmin';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../contexts/auth';
+import { Container, Table, ButtonGroup } from './stylesAdmin';
 
 export default function Admin() {
+    const { deleteList, loading, list, setList } = useContext(AuthContext);
+
+    useEffect(() => {
+        loading();
+    }, [])
+
+    async function handleDelete(){
+        for(let item of list){
+            deleteList(item.id);
+        }
+        
+        setList([]);
+    }
+
     return (
         <Container>
             <h1>Dashboard Técnico</h1>
             <hr/>
-            <h3>Lista de quem irá hoje</h3>
-            <table>
+            <h2>Lista de quem irá hoje</h2>
+            <Table>
                 <thead>
                     <tr>
                         <th>Estudante</th>
@@ -14,36 +30,18 @@ export default function Admin() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Edgar</td>
-                        <td>Sim</td>
-                    </tr>
-                    <tr>
-                        <td>Franscico</td>
-                        <td>Não</td>
-                    </tr>
-                    <tr>
-                        <td>Fernando</td>
-                        <td>Talvez</td>
-                    </tr>
-                    <tr>
-                        <td>Edgar</td>
-                        <td>Sim</td>
-                    </tr>
-                    <tr>
-                        <td>Franscico</td>
-                        <td>Não</td>
-                    </tr>
-                    <tr>
-                        <td>Fernando</td>
-                        <td>Talvez</td>
-                    </tr>
+                    {list.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.name}</td>
+                            <td>{item.answer}</td>
+                        </tr>
+                    ))}
                 </tbody>
-            </table>
-            <div>
+            </Table>
+            <ButtonGroup>
                 <button>Gerar Gráfico</button>
-                <button>Limpar</button>
-            </div> 
+                <button onClick={handleDelete}>Limpar</button>
+            </ButtonGroup> 
         </Container>
     );
 }
