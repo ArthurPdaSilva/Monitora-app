@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ContainerError = styled.div`
     display: flex;
     align-items: center;
-    justify: center;
+    justify-content: center;
     flex-direction: column;
     gap: var(--espacamentoPadrao);
     background-color: var(--paleta3);
