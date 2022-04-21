@@ -19,15 +19,15 @@ export default function AuthProvider({children}){
     }, []);
 
     async function verifyUser(name, dataOccupation){
-        let names = ["Daniel465", "Arthur879", "Victor746"];
+        let nameAdmin = process.env.REACT_APP_USER_ADMIN;
 
-        if(dataOccupation === "Sou estudante" || names.includes(name) && dataOccupation === "Sou administrador"){
+        if(dataOccupation === "Sou estudante" || (name === nameAdmin && dataOccupation === "Sou administrador")){
             await setDoc(doc(db, `users/${name}`), {
                 name: name,
                 occupation: dataOccupation
             }).then(() => {
                 let data = {
-                    name: name,
+                    name: name === nameAdmin ? "adminUser" : name,
                     occupation: dataOccupation,
                 }
 
@@ -48,7 +48,7 @@ export default function AuthProvider({children}){
             name: user.name,
             answer: answer
         }).then(() => {
-            alert("Resposta computada");
+            return true;
         }).catch((error) => {
             alert(error);
         })
@@ -80,7 +80,7 @@ export default function AuthProvider({children}){
     }
 
     return(
-        <AuthContext.Provider value={{signed: !!user, user, setUser, verifyUser, answerToday, storageUser, loading, list, deleteList}}>
+        <AuthContext.Provider value={{signed: !!user, user, setUser, verifyUser, answerToday, storageUser, loading, list, deleteList, setList}}>
             {children}
         </AuthContext.Provider>
     )

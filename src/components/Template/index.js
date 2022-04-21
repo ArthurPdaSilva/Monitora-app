@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/auth.js";
 
 export default function Template({header, legend, dataArray}){
     const [ name, setName ] = useState('');
+    const [ loading, setLoading ] = useState(false);
     const [ data, setData ] = useState(dataArray[0]);
     const [ answers, setAnswers ] = useState(dataArray);
 
@@ -15,7 +16,7 @@ export default function Template({header, legend, dataArray}){
         if(header !== "Questionário do dia"){
             verifyUser(name, data);
         }else{
-            answerToday(data);
+            if(answerToday(data)) setLoading(true);
         }
         
     }, [data, name, user, setUser, storageUser]);
@@ -34,22 +35,32 @@ export default function Template({header, legend, dataArray}){
                     <input type="text" value={name} placeholder="Nome Completo" onChange={(e) => setName(e.target.value)}/>
                 </GroupInput>
                 )}
+
+                {loading && (
+                    <p>
+                        Mensagem enviada com sucesso! Volte amanhã!
+                    </p>
+                )}
                 
-                <Field>
-                    <legend>{legend}</legend>
-                    
-                    {answers.map(item => (
-                        <GroupRadio key={item}>
-                            <input type="radio" name="group" id={item} value={item} onChange={(e) => setData(e.target.value)}/>
-                            <label htmlFor={item}>{item}</label>
-                        </GroupRadio>
-                    ))}
-                </Field>
+                {!loading && (
+                    <Field>
+                        <legend>{legend}</legend>
+                        
+                        {answers.map(item => (
+                            <GroupRadio key={item}>
+                                <input type="radio" name="group" id={item} value={item} onChange={(e) => setData(e.target.value)}/>
+                                <label htmlFor={item}>{item}</label>
+                            </GroupRadio>
+                        ))}
+                    </Field>
+                )}
 
-
-                <button type="submit">
-                    {header === "Questionário do dia" ? "Enviar" : "Entrar"}
-                </button>
+                {!loading && (
+                    <button type="submit">
+                        {header === "Questionário do dia" ? "Enviar" : "Entrar"}
+                    </button>
+                )}
+                
             </Form>
         </Container>
     )

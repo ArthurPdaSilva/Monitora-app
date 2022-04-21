@@ -13,6 +13,8 @@ export const Container = styled.div`
     }
 
     h1{
+        display: flex;
+        justify-content: center;
         padding: 30px;
         border-top-left-radius: var(--espacamentoPadrao);
         border-top-right-radius: var(--espacamentoPadrao);
@@ -27,6 +29,13 @@ export const Form = styled.form`
     border-bottom-left-radius: var(--espacamentoPadrao);
     border-bottom-right-radius: var(--espacamentoPadrao);
     gap: var(--espacamentoPadrao);
+
+    p{
+        display: flex;
+        align-items: center;
+        font-size: 1.2rem;
+        height: 10vw;
+    }
 
     button{
         width: 100%;
